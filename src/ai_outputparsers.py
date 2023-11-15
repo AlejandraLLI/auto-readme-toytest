@@ -6,15 +6,6 @@ class FormattedOutputConvertToText(BaseOutputParser):
     """
 
     def parse(self, text: str):
-        """
-        Formats the input text as a simple string.
-
-        Parameters:
-        - text (str): The text output from a language model call.
-
-        Returns:
-        str: The formatted text.
-        """
         
         # Directly convert the text to string without additional formatting
         formatted_text = f"{text}"
@@ -27,16 +18,7 @@ class MarkdownTreeStructureOutputParser(BaseOutputParser):
     """
 
     def parse(self, text: str):
-        """
-        Formats the repository structure as a tree in Markdown.
-
-        Parameters:
-        - text (str): The text output from a language model call, representing file paths.
-
-        Returns:
-        str: The formatted tree structure in Markdown.
-        """
-        # Split the text into lines, each representing a file path
+       # Split the text into lines, each representing a file path
         paths = text.split("\n")
 
         # Organize paths into a tree structure
@@ -47,15 +29,6 @@ class MarkdownTreeStructureOutputParser(BaseOutputParser):
         return formatted_text
 
     def build_tree_structure(self, paths):
-        """
-        Builds a tree structure from a list of file paths.
-
-        Parameters:
-        - paths (list): A list of file paths.
-
-        Returns:
-        dict: A nested dictionary representing the tree structure of the paths.
-        """
         tree = {}
         for path in paths:
             current_level = tree
@@ -66,16 +39,6 @@ class MarkdownTreeStructureOutputParser(BaseOutputParser):
         return tree
 
     def format_tree(self, tree, indent=0):
-        """
-        Recursively formats the tree structure for Markdown output.
-
-        Parameters:
-        - tree (dict): The tree structure to format.
-        - indent (int): The current indentation level for formatting.
-
-        Returns:
-        str: The formatted tree structure as a string.
-        """
         output = ""
         for key, value in tree.items():
             output += "    " * indent + f"{key}\n"
@@ -90,15 +53,6 @@ class FormattedOutputParserSummary(BaseOutputParser):
     """
 
     def parse(self, text: str):
-        """
-        Formats the input text to highlight file paths and summaries.
-
-        Parameters:
-        - text (str): The text output from a language model call, containing file paths and summaries.
-
-        Returns:
-        str: The formatted text with file paths in bold and summaries as paragraphs.
-        """
         # Assuming the text format is "File Path: {file_path} Summary: {summary}"
         parts = text.split("\nSummary: ")
         file_path = parts[0].replace("File Path: ", "").strip()

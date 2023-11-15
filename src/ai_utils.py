@@ -5,13 +5,7 @@ from langchain.prompts.chat import ChatPromptTemplate
 import src.ai_outputparsers as parsers
 
 class CustomCodeLoader(BaseLoader):
-    """
-    Custom loader for loading code files into documents, handling various programming languages.
-
-    Attributes:
-    - files (dict): A dictionary where keys are file paths and values are file contents.
-    """
-
+    
     # Mapping of file extensions to their corresponding languages
     extension_to_language = {
         '.py': 'python',
@@ -22,34 +16,16 @@ class CustomCodeLoader(BaseLoader):
     }
 
     def __init__(self, files):
-        """
-        Initializes the CustomCodeLoader with a set of files.
-
-        Parameters:
-        - files (dict): A dictionary of files with paths as keys and contents as values.
-        """
+        
         self.files = files
 
     def get_language_from_extension(self, file_path):
-        """
-        Determines the programming language of a file based on its extension.
-
-        Parameters:
-        - file_path (str): The path of the file.
-
-        Returns:
-        str: The detected programming language, or 'unknown' if not identifiable.
-        """
+        
         _, extension = os.path.splitext(file_path)
         return self.extension_to_language.get(extension.lower(), 'unknown')
 
     def load(self):
-        """
-        Iterates over the provided files, creating a document structure for each.
-
-        Yields:
-        dict: A document containing the file content and metadata, including the file path and detected language.
-        """
+       
         for path, content in self.files.items():
             if isinstance(content, str):
                 language = self.get_language_from_extension(path)
@@ -64,17 +40,7 @@ class CustomCodeLoader(BaseLoader):
 
     
 def get_repo_overview(documents, openai_api_key):
-    """
-    Generates a brief overview of a GitHub repository suitable for a README file.
-
-    Parameters:
-    - documents (list): A list of documents representing the contents of the repository.
-    - openai_api_key (str): The API key for OpenAI's GPT model.
-
-    Returns:
-    str: A paragraph summarizing the purpose and contents of the repository.
-    """
-   
+    
     template = """
     You are a helpful assistant who generates summarizations of code to build a README file. 
     Give me a one paragraph with a brief overview of what is the repo for. 
@@ -92,17 +58,7 @@ def get_repo_overview(documents, openai_api_key):
     return(answer)
 
 
-def get_repo_structure(documents, openai_api_key):
-    """
-    Generates a tree structure representation of the repository's file structure.
-
-    Parameters:
-    - documents (list): A list of documents representing the contents of the repository.
-    - openai_api_key (str): The API key for OpenAI's GPT model.
-
-    Returns:
-    str: A markdown-formatted tree structure of the repository's file system.
-    """    
+def get_repo_structure(documents, openai_api_key):  
 
     template = """
     You are a helpful assistant who helps to build a README file. 
@@ -126,19 +82,7 @@ def get_repo_structure(documents, openai_api_key):
 
 
 def getting_started(repo_name, documents, openai_api_key):
-    """
-    Provides instructions for getting started with a GitHub repository, including 
-    cloning and installing dependencies.
-
-    Parameters:
-    - repo_name (str): The name of the repository.
-    - documents (list): A list of documents representing the contents of the repository.
-    - openai_api_key (str): The API key for OpenAI's GPT model.
-
-    Returns:
-    str: Step-by-step instructions for getting started with the repository.
-    """
-
+    
     template = """
     You are a helpful assistant who helps built a README file for a Github repository. 
     Give me instructions on how to to get started. detailing the steps for cloning the repository 
@@ -163,16 +107,6 @@ def getting_started(repo_name, documents, openai_api_key):
 
 
 def get_file_summaries(documents, openai_api_key):
-    """
-    Generates summaries for each file in the repository.
-
-    Parameters:
-    - documents (list): A list of documents, each containing file path and content.
-    - openai_api_key (str): The API key for OpenAI's GPT model.
-
-    Returns:
-    list: A list of summaries for each file in the repository.
-    """
     
     template = """
     You are a helpful assistant who generates summarizations of code to build a README file. 
